@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Form Pendaftaran Siswa</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+
+<body class="bg-primary text-white">
+
+  <h5 class="bg-white py-4 text-center text-dark">
+    <strong>Form Pendaftaran Minat Siswa</strong>
+  </h5>
+
+  <marquee behavior="" direction="">Isilah dengan jujur & dengan data yang benar</marquee>
+
+  <div class="container mt-3 card">
+    <form method="POST"
+      action="https://script.google.com/macros/s/AKfycbxQ9BLUtDjt_Gd4iX0Kw5iOa_c4BBHbA66AxS8IlIecHGjTyy_03n6GyF9Z-_dRcTSx/exec">
+      <div class="row card-body">
+        <div class="form-group col-md-6 my-2">
+          <label for="nama">Nama</label>
+          <input id="nama" name="Nama" type="text" required="required" class="form-control">
+        </div>
+        <div class="form-group col-md-6 my-2">
+          <label for="alamat">Alamat</label>
+          <input id="alamat" name="Alamat" type="text" required="required" class="form-control">
+        </div>
+        <div class="form-group col-md-6 my-2">
+          <label for="notelp">No Telp</label>
+          <input id="notelp" name="No_telp" type="text" required="required" class="form-control">
+        </div>
+        <div class="form-group col-md-6 my-2">
+          <label for="email">Email</label>
+          <input id="email" name="Email" type="text" required="required" class="form-control">
+        </div>
+        <div class="form-group col-md-6 my-2">
+          <label for="satker">Satuan Kerja</label>
+          <input id="satker" name="Satuan_kerja" type="text" required="required" class="form-control">
+        </div>
+        <div class="form-group col-md-6 my-2">
+          <label for="satwil">Satuan Wilayah</label>
+          <input id="satwil" name="Satuan_wilayah" type="text" required="required" class="form-control">
+        </div>
+        <div class="form-group col-md-6 my-2">
+          <label for="pekerjaan">Pekerjaan</label>
+          <select id="pekerjaan" name="Minat" class="form-control">
+            <option value="Programmer">Programmer</option>
+            <option value="Network Engineer">Network Engineer</option>
+            <option value="IT Security">IT Security</option>
+            <option value="Database Engineer">Database Engineer</option>
+            <option value="System Administrator">System Administrator</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <button name="submit" type="submit" class="btn btn-primary btn-block">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</body>
+
+</html>
