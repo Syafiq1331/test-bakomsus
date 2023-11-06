@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="X-UA-Compatible" content="IE-edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Form Pendaftaran Siswa</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -26,10 +26,35 @@
           <label for="nama">Nama</label>
           <input id="nama" name="Nama" type="text" required="required" class="form-control">
         </div>
+
         <div class="form-group col-md-6 my-2">
-          <label for="alamat">Alamat</label>
-          <input id="alamat" name="Alamat" type="text" required="required" class="form-control">
+          <label for="provinceSelect">Provinsi</label>
+          <select name="Provinsi" class="form-control" id="provinceSelect">
+            <option value="">Pilih Provinsi</option>
+          </select>
         </div>
+
+        <div class="form-group col-md-6 my-2">
+          <label for="regencySelect">Kabupaten/Kota</label>
+          <select name="Kabupaten/Kota" class="form-control" id="regencySelect">
+            <option value="">Pilih Kabupaten/Kota</option>
+          </select>
+        </div>
+
+        <div class="form-group col-md-6 my-2">
+          <label for="districtSelect">Kecamatan</label>
+          <select name="Kecamatan" class="form-control" id="districtSelect">
+            <option value="">Pilih Kecamatan</option>
+          </select>
+        </div>
+
+        <div class="form-group col-md-6 my-2">
+          <label for="villageSelect">Kelurahan/Desa</label>
+          <select name="Kelurahan/Desa" class="form-control" id="villageSelect">
+            <option value="">Pilih Kelurahan/Desa</option>
+          </select>
+        </div>
+
         <div class="form-group col-md-6 my-2">
           <label for="notelp">No Telp</label>
           <input id="notelp" name="No_telp" type="text" required="required" class="form-control">
@@ -43,7 +68,7 @@
           <input id="satker" name="Satuan_kerja" type="text" required="required" class="form-control">
         </div>
         <div class="form-group col-md-6 my-2">
-          <label for="satwil">Satuan Wilayah</label>
+          <label for "satwil">Satuan Wilayah</label>
           <input id="satwil" name="Satuan_wilayah" type="text" required="required" class="form-control">
         </div>
         <div class="form-group col-md-6 my-2">
@@ -62,6 +87,93 @@
       </div>
     </form>
   </div>
+
+  <script>
+    // Fungsi untuk mengisi elemen select dengan data
+    function populateSelect(selectElement, data) {
+      selectElement.innerHTML = ''; // Kosongkan elemen select
+      data.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.name; // Nama sebagai value
+        option.text = item.name; // Nama sebagai label
+        option.setAttribute('data-id', item.id); // ID sebagai atribut data-id
+        selectElement.appendChild(option);
+      });
+    }
+
+    // Ambil data provinsi dari API
+    fetch('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json')
+      .then(response => response.json())
+      .then(provinces => {
+        const provinceSelect = document.getElementById('provinceSelect');
+        populateSelect(provinceSelect, provinces); // Isi elemen select provinsi
+      })
+      .catch(error => console.error('Terjadi kesalahan:', error));
+
+    const regencySelect = document.getElementById('regencySelect');
+    const districtSelect = document.getElementById('districtSelect');
+    const villageSelect = document.getElementById('villageSelect');
+
+    // Tambahkan event listener untuk perubahan pada elemen select provinsi
+    provinceSelect.addEventListener('change', () => {
+      const selectedProvince = provinceSelect.options[provinceSelect.selectedIndex];
+      const selectedProvinceId = selectedProvince.getAttribute('data-id');
+
+      // Hapus semua opsi kabupaten/kota, kecamatan, dan kelurahan/desa yang ada
+      regencySelect.innerHTML = '<option value="">Pilih Kabupaten/Kota</option>';
+      districtSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+      villageSelect.innerHTML = '<option value="">Pilih Kelurahan/Desa</option>';
+
+      if (selectedProvinceId) {
+        // Ambil data kabupaten/kota berdasarkan ID provinsi yang dipilih
+        fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`)
+          .then(response => response.json())
+          .then(regencies => {
+            populateSelect(regencySelect, regencies); // Isi elemen select kabupaten/kota
+          })
+          .catch(error => console.error('Terjadi kesalahan:', error));
+      }
+    });
+
+    // Tambahkan event listener untuk perubahan pada elemen select kabupaten
+    regencySelect.addEventListener('change', () => {
+      const selectedRegency = regencySelect.options[regencySelect.selectedIndex];
+      const selectedRegencyId = selectedRegency.getAttribute('data-id');
+
+      // Hapus semua opsi kecamatan dan kelurahan/desa yang ada
+      districtSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+      villageSelect.innerHTML = '<option value="">Pilih Kelurahan/Desa</option>';
+
+      if (selectedRegencyId) {
+        // Ambil data kecamatan berdasarkan ID kabupaten/kota yang dipilih
+        fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${selectedRegencyId}.json`)
+          .then(response => response.json())
+          .then(districts => {
+            populateSelect(districtSelect, districts); // Isi elemen select kecamatan
+          })
+          .catch(error => console.error('Terjadi kesalahan:', error));
+      }
+    });
+
+    // Tambahkan event listener untuk perubahan pada elemen select kecamatan
+    districtSelect.addEventListener('change', () => {
+      const selectedDistrict = districtSelect.options[districtSelect.selectedIndex];
+      const selectedDistrictId = selectedDistrict.getAttribute('data-id');
+
+      // Hapus semua opsi kelurahan/desa yang ada
+      villageSelect.innerHTML = '<option value="">Pilih Kelurahan/Desa</option>';
+
+      if (selectedDistrictId) {
+        // Ambil data kelurahan/desa berdasarkan ID kecamatan yang dipilih
+        fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/villages/${selectedDistrictId}.json`)
+          .then(response => response.json())
+          .then(villages => {
+            populateSelect(villageSelect, villages); // Isi elemen select kelurahan/desa
+          })
+          .catch(error => console.error('Terjadi kesalahan:', error));
+      }
+    });
+  </script>
 </body>
 
 </html>
